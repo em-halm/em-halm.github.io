@@ -2,34 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>A Small Surprise</title>
+  <title>Pack Opening</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #111;
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      text-align: center;
-    }
-    img {
-      max-width: 90%;
-      max-height: 90%;
-      border-radius: 16px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div>
-    <h1>🎁</h1>
-    <p>You found it.</p>
-    <!-- Replace image.png with your image filename -->
-    <img src="image.png" alt="Surprise" />
+
+  <div class="stage">
+    <div class="pack" id="pack">
+
+      <!-- Contents (revealed after opening) -->
+      <div class="contents" id="contents" aria-hidden="true">
+        <div class="shine"></div>
+        <img class="card" src="assets/img/image.png" alt="Your reveal" />
+        <div class="caption">✨ You pulled something special ✨</div>
+      
+      </div>
+
+
+      <!-- Wrapper art (optional: swap with your own pack PNG later) -->
+      <div class="wrapper">
+        <div class="pack-art">
+          <div class="prompt" id="prompt">Slide left to open</div>
+        </div>
+      </div>
+
+      <!-- The draggable “top seal” -->
+      <div class="seal" id="seal" role="button" aria-label="Slide up to open pack">
+        <div class="seal-grip">
+          <div class="grip-line"></div>
+          <div class="grip-line"></div>
+          <div class="grip-line"></div>
+        </div>
+      </div>
+
+    </div>
   </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

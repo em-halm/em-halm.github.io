@@ -1,0 +1,241 @@
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body{
+  margin:0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at 20% 10%, #2a2a2a, #050505 60%);
+  color: #fff;
+  overflow: hidden;
+}
+
+.stage{
+  height: 100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 24px;
+}
+
+.pack{
+  width: min(360px, 92vw);
+  aspect-ratio: 3 / 5;
+  position: relative;
+  border-radius: 22px;
+  transform: translateZ(0);
+  filter: drop-shadow(0 25px 50px rgba(0,0,0,0.6));
+}
+
+/* Inner contents */
+.contents{
+  position:absolute;
+  inset: 16px;
+  border-radius: 18px;
+  background: radial-gradient(circle at 30% 20%, #1c1c1c, #0b0b0b);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  opacity: 0;
+  transform: translateY(18px) scale(0.98);
+  transition: opacity 650ms ease, transform 650ms ease;
+  overflow:hidden;
+}
+
+.contents.revealed{
+  opacity:1;
+  transform: translateY(0) scale(1);
+}
+
+.contents .card{
+  width: 88%;
+  max-height: 70%;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.55);
+}
+
+.caption{
+  margin-top: 10px;
+  opacity: 0.85;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+/* Shine sweep */
+.shine{
+  position:absolute;
+  inset: -40%;
+  background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.18) 50%, transparent 65%);
+  transform: translateX(-40%) rotate(8deg);
+  animation: shine 3.2s ease-in-out infinite;
+  pointer-events:none;
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+.contents.revealed .shine{ opacity: 1; }
+
+@keyframes shine{
+  0% { transform: translateX(-45%) rotate(8deg); }
+  55% { transform: translateX(45%) rotate(8deg); }
+  100% { transform: translateX(45%) rotate(8deg); }
+}
+
+/* Wrapper (the pack body art) — IMAGE-BASED */
+.wrapper{
+  position:absolute;
+  inset: 0;
+  border-radius: 22px;
+  overflow:hidden;
+
+  /* 🔻 change filename if needed */
+  background-image:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,0.10), transparent 45%),
+    url("assets/img/packwrapper.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+/* faux foil speckle */
+.wrapper::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 14px 14px;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+  pointer-events:none;
+}
+
+.pack-art{
+  position:absolute;
+  inset: 0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding: 18px;
+  text-align:center;
+}
+
+.logo{
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  font-size: 2.1rem;
+  line-height: 0.95;
+  text-shadow: 0 10px 25px rgba(0,0,0,0.55);
+}
+
+.sub{
+  margin-top: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.35);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* Prompt centered on the pack */
+.prompt{
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  opacity: 0.85;
+  background: rgba(0,0,0,0.45);
+  padding: 12px 18px;
+  border-radius: 999px;
+
+  pointer-events: none; /* important: don’t block dragging */
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+
+
+
+/* The draggable seal — RIGHT EDGE STRIP */
+/* The draggable seal — TOP STRIP (20% height), slides horizontally */
+.seal{
+  position:absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 20%;
+  border-radius: 22px 22px 16px 16px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,0.45),
+    rgba(0,0,0,0.15),
+    rgba(0,0,0,0.45)
+  );
+  backdrop-filter: blur(6px);
+  cursor: grab;
+  touch-action: none;
+
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  padding-bottom: 10px;
+
+  transition: transform 450ms cubic-bezier(.2,.9,.2,1), opacity 350ms ease;
+}
+
+
+.seal:active{ cursor: grabbing; }
+
+.seal-grip{
+  width: 34px;
+  height: 44%;
+  max-height: 180px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.14);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap: 6px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.14);
+}
+.grip-line{
+  width: 2px;
+  height: 55%;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.55);
+  opacity: 0.75;
+}
+
+
+.grip-line{
+  width: 60%;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.55);
+  opacity: 0.75;
+}
+
+/* Open state animations */
+.pack.open .wrapper{
+  animation: wrapperDrop 650ms cubic-bezier(.2,.9,.2,1) forwards;
+}
+
+@keyframes wrapperDrop{
+  to { transform: translateY(22px) scale(0.985); opacity: 0.0; }
+}
+
+.pack.open .seal{
+  transform: translateX(-140%) translateY(-20%);
+  opacity: 0;
+  pointer-events:none;
+}
+
+.pack.open .prompt{
+  opacity: 0;
+  transform: translateY(8px);
+}
